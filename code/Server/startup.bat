@@ -1,0 +1,1 @@
+D:\Alati_i_serveri\apache-tomcat-8.0.32\bin\startup.bat

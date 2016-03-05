@@ -1,0 +1,1 @@
+copy target\Server.war D:\Alati_i_serveri\apache-tomcat-8.0.32\webapps\Server.war
