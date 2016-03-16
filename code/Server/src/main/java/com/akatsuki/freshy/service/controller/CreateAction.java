@@ -1,45 +1,41 @@
 package com.akatsuki.freshy.service.controller;
 
+import java.sql.SQLException;
+
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.json.JSONObject;
-
+import com.akatsuki.freshy.service.actions.ActionBig;
 import com.akatsuki.freshy.service.actions.ActionResponse;
+import com.akatsuki.freshy.service.database.DbAdapter;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-@Path("/create")
-public class CreateAction {
+@Path("create")
+public class CreateAction extends ControllerBase {
 
   @POST
-  @Path("/create")
+  @Path("create")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.TEXT_PLAIN)
-  public String create(String s) {
+  public String create(String request) {
+    Gson gson = new GsonBuilder().create();
+    ActionBig action = gson.fromJson(request, ActionBig.class);
+    System.out.println(action);
 
-    System.out.println("CREATE METODA");
+    DbAdapter dbAdapter = new DbAdapter();
+    try {
+      dbAdapter.open();
+      dbAdapter.create(action);
+      dbAdapter.close();
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
 
-    System.out.println("STRING" + s);
-
-    ActionResponse res = new ActionResponse("NOT OK ACTION RESP");
-
+    ActionResponse res = new ActionResponse("Action not implemented");
     return (new Gson()).toJson(res);
   }
-
-  @GET
-  @Path("/get")
-  @Produces(MediaType.TEXT_PLAIN)
-  public String getIt() {
-
-      System.out.println("GET IT");
-
-
-
-      return "Got it!";
-  }
-
 }
