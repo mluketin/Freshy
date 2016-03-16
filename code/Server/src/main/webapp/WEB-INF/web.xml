@@ -15,4 +15,7 @@
         <servlet-name>Jersey Web Application</servlet-name>
         <url-pattern>/webapi/*</url-pattern>
     </servlet-mapping>
+    <listener>
+        <listener-class>com.akatsuki.freshy.service.init.ServletContextClass</listener-class>
+    </listener>
 </web-app>
