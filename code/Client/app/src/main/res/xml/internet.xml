@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Internet">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="MobileDataEnabled"
+            android:title="Enable usage of mobile data"/>
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="WIFIEnabled"
+            android:title="Enable WIFI"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Checking intervals">
+        <EditTextPreference
+            android:defaultValue="5"
+            android:key="TimeIntervals"
+            android:title="Time frequency in minutes"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

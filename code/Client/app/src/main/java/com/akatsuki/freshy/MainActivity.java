@@ -252,7 +252,10 @@ public class MainActivity extends AppCompatActivity {
     if (id == R.id.action_settings) {
       Intent settingsActivity = new Intent(getBaseContext(), PreferencesActivity.class);
       startActivity(settingsActivity);
-
+    }
+    if (id == R.id.action_internet) {
+      Intent settingsActivity = new Intent(getBaseContext(), InternetActivity.class);
+      startActivity(settingsActivity);
     }
     if (id == R.id.action_help) {
       Intent settingsActivity = new Intent(getBaseContext(), HelpActivity.class);

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.akatsuki.freshy"
-    android:versionCode="1"
-    android:versionName="1.0" >
+<manifest package="com.akatsuki.freshy"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          android:versionCode="1"
+          android:versionName="1.0">
 
     <uses-sdk
         android:minSdkVersion="16"
-        android:targetSdkVersion="23" />
+        android:targetSdkVersion="23"/>
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:allowBackup="true"
@@ -19,24 +19,26 @@
         android:label="@string/app_name"
         android:logo="@mipmap/ikona"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
             android:icon="@mipmap/ikona"
             android:label="Freshy"
             android:logo="@mipmap/ikona"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".PreferencesActivity" >
+        <activity android:name=".PreferencesActivity" android:theme="@style/AppThemePref">
         </activity>
-        <activity android:name=".AboutActivity" >
+        <activity android:name=".AboutActivity" android:theme="@style/AppThemePref">
         </activity>
-        <activity android:name=".HelpActivity" >
+        <activity android:name=".HelpActivity" android:theme="@style/AppThemePref">
+        </activity>
+        <activity android:name=".InternetActivity" android:theme="@style/AppThemePref">
         </activity>
     </application>
 

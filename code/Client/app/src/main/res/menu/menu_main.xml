@@ -7,6 +7,10 @@
         android:title="Notifications"
         android:orderInCategory="100"
         app:showAsAction="never" />
+    <item android:id="@+id/action_internet"
+          android:title="Internet Settings"
+          android:orderInCategory="100"
+          app:showAsAction="never" />
     <item android:id="@+id/action_help"
         android:title="Help"
         android:orderInCategory="200"
