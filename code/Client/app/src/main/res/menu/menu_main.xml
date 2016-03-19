@@ -4,7 +4,7 @@
       android:background="@color/silver"
     tools:context=".MainActivity">
     <item android:id="@+id/action_settings"
-        android:title="Sound and vibration"
+        android:title="Notifications"
         android:orderInCategory="100"
         app:showAsAction="never" />
     <item android:id="@+id/action_help"

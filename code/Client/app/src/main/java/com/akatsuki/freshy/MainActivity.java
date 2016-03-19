@@ -26,7 +26,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -262,25 +261,24 @@ public class MainActivity extends AppCompatActivity {
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-// Handle action bar item clicks here. The action bar will
-// automatically handle clicks on the Home/Up button, so long
-// as you specify a parent activity in AndroidManifest.xml.
+
     int id = item.getItemId();
 
     if (id == android.R.id.home) {
-      //TODO postaviti da se ne mijenja boja ako se klikne na home button
     }
-//noinspection SimplifiableIfStatement
+
     if (id == R.id.action_settings) {
       Intent settingsActivity = new Intent(getBaseContext(), PreferencesActivity.class);
       startActivity(settingsActivity);
 
     }
     if (id == R.id.action_help) {
-      Toast.makeText(MainActivity.this, "Help", Toast.LENGTH_LONG).show();
+      Intent settingsActivity = new Intent(getBaseContext(), HelpActivity.class);
+      startActivity(settingsActivity);
     }
     if (id == R.id.action_about) {
-      Toast.makeText(MainActivity.this, "About", Toast.LENGTH_LONG).show();
+      Intent settingsActivity = new Intent(getBaseContext(), AboutActivity.class);
+      startActivity(settingsActivity);
     }
     return super.onOptionsItemSelected(item);
   }
