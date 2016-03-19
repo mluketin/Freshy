@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="General">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="NotificationsEnabled"
+            android:title="Enable notifications"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Sound">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="SoundEnabled"
+            android:title="Enable sound"/>
+        <RingtonePreference
+            android:defaultValue="content://settings/system/notification_sound"
+            android:dependency="SoundEnabled"
+            android:key="NotificationSound"
+            android:ringtoneType="notification"
+            android:showDefault="true"
+            android:showSilent="false"
+            android:summary="Select the sound to play when notifying"
+            android:title="Select notification sound"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Vibration">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="VibrationEnabled"
+            android:title="Enable vibration"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Lights">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="LightsEnabled"
+            android:summary="Flashes LED when notifying (where applicable)"
+            android:title="Enable lights"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

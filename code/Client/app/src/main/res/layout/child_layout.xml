@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/child_txt"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+        android:paddingTop="10dp" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:id="@+id/child_url_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="URL:" />
+
+        <EditText
+            android:id="@+id/child_url"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter URL"
+            android:padding="10dp" />
+
+    </LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/radioGlobal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/radioGlobalAny"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:onClick="ispis"
+            android:text="Notify me on any change" />
+
+        <RadioButton
+            android:id="@+id/radioGlobalSpecific"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notify me on specific changes as stated below" />
+
+    </RadioGroup>
+
+    <CheckBox
+        android:id="@+id/checkText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Text" />
+
+    <RadioGroup
+        android:id="@+id/radioText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/radioTextAny"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Any change" />
+
+        <RadioButton
+            android:id="@+id/radioTextSpecific"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Specific words:" />
+
+    </RadioGroup>
+
+    <CheckBox
+        android:id="@+id/checkLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Link" />
+
+    <RadioGroup
+        android:id="@+id/radioLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/radioLinkAny"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Any new link" />
+
+        <RadioButton
+            android:id="@+id/radioLinkSpecific"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Specific links:" />
+
+    </RadioGroup>
+
+    <CheckBox
+        android:id="@+id/checkImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Image" />
+
+    <RadioGroup
+        android:id="@+id/radioImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/radioImageAny"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Any new image" />
+
+        <RadioButton
+            android:id="@+id/radioImageSpecific"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Specific images with names:" />
+
+    </RadioGroup>
+
+    <CheckBox
+        android:id="@+id/checkAudio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Audio" />
+
+    <RadioGroup
+        android:id="@+id/radioAudio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/radioAudioAny"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Any new audio content" />
+
+        <RadioButton
+            android:id="@+id/radioAudioSpecific"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Specific audio content with names:" />
+
+    </RadioGroup>
+
+    <CheckBox
+        android:id="@+id/checkVideo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Video" />
+
+    <RadioGroup
+        android:id="@+id/radioVideo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/radioVideoAny"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Any new Video" />
+
+        <RadioButton
+            android:id="@+id/radioVideoSpecific"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Specific video contents with name:" />
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Save" />
+
+</LinearLayout>
