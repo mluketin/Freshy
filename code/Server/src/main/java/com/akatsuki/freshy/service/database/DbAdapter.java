@@ -118,5 +118,16 @@ public class DbAdapter {
     return listUrls;
   }
 
+  public String getWords(String url) throws SQLException {
+    String words = null;
+    final String selectSql = "SELECT words FROM main WHERE url like '" + url + "';";
 
+    Statement stmt = connection.createStatement();
+    ResultSet rs = stmt.executeQuery(selectSql);
+
+    if(rs.next())
+      words = rs.getString(1);
+    rs.close();
+    return words;
+  }
 }
