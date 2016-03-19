@@ -54,23 +54,15 @@ public class MainActivity extends AppCompatActivity {
     Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
     setSupportActionBar(myToolbar);
 
-    // Get a support ActionBar corresponding to this toolbar
     ActionBar ab = getSupportActionBar();
-//ab.setLogo(R.drawable.ikona);
-    // Enable the Up button
-    //ab.setDisplayUseLogoEnabled(true);
-    //ab.setLogo(R.drawable.ikona);
     ab.setHomeAsUpIndicator(R.mipmap.ikona);
-
     ab.setDisplayHomeAsUpEnabled(true);
 
     listData = DataProvider.getData();
     listView = (ListView) findViewById(R.id.list);
     adapter = new MyListAdapter(this, listData);
     listView.setAdapter(adapter);
-
     listView.setItemsCanFocus(true);
-
 
     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -83,12 +75,9 @@ public class MainActivity extends AppCompatActivity {
         if (openedChildIndex != -1) {
 
           Log.i("openedChildIndex", String.valueOf(openedChildIndex));
-          View viewSame = listView.getChildAt(openedChildIndex);
+          View viewSame = lastOpenedChild;
           Log.i("LIST SIZE", String.valueOf(listView.getChildCount()));
           ActionBig action = listData.get(openedChildIndex);
-
-
-          viewSame = lastOpenedChild;
 
           if (viewSame == null) {
             Log.i("NULL", "VIEW SAME NULL");
@@ -130,10 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
           //ako je kliknuti item razlicit od vec otvorenog onda otvorenog zatvaramo
           if (openedChildIndex != position) {
-//            RelativeLayout row = (RelativeLayout) listView.getChildAt(openedChildIndex);
-//            RelativeLayout body = (RelativeLayout) row.findViewById(R.id.body); //body tog djeteta koje je otvoreno
             RelativeLayout body = (RelativeLayout) viewSame.findViewById(R.id.body); //body tog djeteta koje je otvoreno
-
             body.setVisibility(View.GONE);
           }
         }
@@ -159,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
           @Override
           public void onClick(View v) {
 
-            //listView.smoothScrollToPosition(position);
             ActionBig action = listData.get(position);
 
             EditText editText = (EditText) view.findViewById(R.id.editTextName);
@@ -246,15 +231,12 @@ public class MainActivity extends AppCompatActivity {
                     });
 
     listView.setOnTouchListener(touchListener);
-    // Setting this scroll listener is required to ensure that during ListView scrolling,
-    // we don't look for swipes.
     listView.setOnScrollListener(touchListener.makeScrollListener());
 
   }
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
-// Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.menu_main, menu);
     return true;
   }
@@ -283,21 +265,10 @@ public class MainActivity extends AppCompatActivity {
     return super.onOptionsItemSelected(item);
   }
 
-  public void ispis(View view) {
-    Log.i("AOKSJDLKASJDLKASJ", "asdasd");
-
-  }
-
-  //metoda koja se pokrene kad se klikne New botun
   public void addNew(View view) {
     listData.add(new ActionBig(null, "", new ArrayList<String>(), "My URL", false, false, false, false, false, false));
 
     adapter.notifyDataSetChanged();
-/*    listView.performItemClick(
-            listView.getAdapter().getView(listView.getAdapter().getCount() - 1, null, null),
-            listView.getAdapter().getCount() - 1,
-            listView.getAdapter().getItemId(listView.getAdapter().getCount()-1));*/
-// ne diraj ovo dole
     listView.smoothScrollToPosition(listView.getAdapter().getCount());
 
     (new MyTask(this)).execute();
@@ -316,30 +287,34 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected Void doInBackground(Void... params) {
       SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-      String strRingtonePreference = preference.getString("NotificationSound", "DEFAULT_SOUND");
-      Boolean strVibratePreference = preference.getBoolean("VibrationEnabled", false);
-      Boolean strSoundPreferenceEnabled = preference.getBoolean("SoundEnabled", false);
-      Boolean strLightsPreference = preference.getBoolean("LightsEnabled", false);
       Boolean strNotifPreference = preference.getBoolean("NotificationsEnabled", false);
 
-      int icon = R.mipmap.ikona;
-      String tickerText = "Website has changed!";
+      if (strNotifPreference == true) {
+        String strRingtonePreference = preference.getString("NotificationSound", "DEFAULT_SOUND");
+        Boolean strVibratePreference = preference.getBoolean("VibrationEnabled", false);
+        Boolean strSoundPreferenceEnabled = preference.getBoolean("SoundEnabled", false);
+        Boolean strLightsPreference = preference.getBoolean("LightsEnabled", false);
 
-      NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-              .setSmallIcon(icon)
-              .setContentTitle("Freshy")
-              .setContentText(tickerText);
-      if (strSoundPreferenceEnabled == true)
-        builder.setSound(Uri.parse(strRingtonePreference));
-      if (strVibratePreference == true)
-        builder.setVibrate(new long[]{500, 1000, 500});
-      if (strLightsPreference == true)
-        builder.setLights(getResources().getColor(R.color.gray), 1000, 1000);
+        int icon = R.mipmap.ikona;
+        String tickerText = "Website has changed!";
 
-      NotificationManager notifManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE); //ovo je ok
-      int NOTIFICATION_REF = 1;
-      notifManager.notify(NOTIFICATION_REF, builder.build());
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                .setSmallIcon(icon)
+                .setContentTitle("Freshy")
+                .setContentText(tickerText);
+        if (strSoundPreferenceEnabled == true)
+          builder.setSound(Uri.parse(strRingtonePreference));
+        if (strVibratePreference == true)
+          builder.setVibrate(new long[]{500, 1000, 500});
+        if (strLightsPreference == true)
+          builder.setLights(getResources().getColor(R.color.gray), 1000, 1000);
 
+        NotificationManager notifManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE); //ovo je ok
+        int NOTIFICATION_REF = 1;
+
+
+        notifManager.notify(NOTIFICATION_REF, builder.build());
+      }
       return null;
     }
   }
