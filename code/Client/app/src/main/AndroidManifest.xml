@@ -51,13 +51,12 @@
             android:theme="@style/AppThemePref">
         </activity>
 
-        <service
-            android:name=".service.Scraper"
-            android:exported="false">
-        </service>
-        <service
+
+           <service
             android:name=".service.ScrapingService"
+            android:enabled="true"
             android:exported="false">
+
         </service>
     </application>
 

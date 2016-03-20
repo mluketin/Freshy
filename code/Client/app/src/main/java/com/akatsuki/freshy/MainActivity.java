@@ -95,8 +95,6 @@ public class MainActivity extends AppCompatActivity {
     listView.setItemsCanFocus(true);
 
 
-
-
     ScrapingService service = new ScrapingService();
     startService(new Intent(getBaseContext(), ScrapingService.class));
 
@@ -273,6 +271,9 @@ public class MainActivity extends AppCompatActivity {
     listView.setOnTouchListener(touchListener);
     listView.setOnScrollListener(touchListener.makeScrollListener());
 
+
+
+
   }
 
   @Override
@@ -309,6 +310,8 @@ public class MainActivity extends AppCompatActivity {
   }
 
   public void addNew(View view) {
+
+    Log.i("ADD NEW", "asd");
     listData.add(new ActionBig("", "", "My URL", false, false, false, false, false, false));
 
     adapter.notifyDataSetChanged();
@@ -355,20 +358,21 @@ public class MainActivity extends AppCompatActivity {
   @Override
   protected void onPause() {
     Log.i("PAUSE", "PAUSE");
+    FileHandler.saveObject(listData, listFile);
+
     super.onPause();
   }
 
   @Override
   protected void onStop() {
     Log.i("STOP", "STOP");
-    FileHandler.saveObject(listData, listFile);
     super.onStop();
   }
 
   @Override
   protected void onResume() {
-    listData = (List<ActionBig>) FileHandler.readObject(listFile);
-    adapter.notifyDataSetChanged();
+//    listData = (List<ActionBig>) FileHandler.readObject(listFile);
+//    adapter.notifyDataSetChanged();
     super.onResume();
   }
 

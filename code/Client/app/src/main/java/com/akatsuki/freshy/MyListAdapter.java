@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.akatsuki.freshy.model.ActionBig;
 import com.akatsuki.freshy.util.DataProvider;
+import com.akatsuki.freshy.util.FileHandler;
 import com.akatsuki.freshy.util.HashGenerator;
 
 import org.jsoup.Jsoup;
@@ -124,6 +125,7 @@ public class MyListAdapter extends ArrayAdapter<ActionBig> {
           btnService.setBackgroundColor(context.getResources().getColor(R.color.silver));
           values.get(position).setStatus(false);
           relService.setBackgroundColor(context.getResources().getColor(R.color.silver));
+          FileHandler.saveObject(values, MainActivity.listFile);
 //          DataProvider.pause(values.get(position), context);
 
         } else {
@@ -132,6 +134,8 @@ public class MyListAdapter extends ArrayAdapter<ActionBig> {
           btnService.setBackgroundColor(context.getResources().getColor(R.color.white));
           relService.setBackgroundColor(context.getResources().getColor(R.color.white));
           values.get(position).setStatus(true);
+          FileHandler.saveObject(values, MainActivity.listFile);
+
 //          ShaAsyncTask task = new ShaAsyncTask(values.get(position), context);
 //          task.execute();
         }

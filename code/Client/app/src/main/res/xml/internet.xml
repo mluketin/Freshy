@@ -3,7 +3,7 @@
 
     <PreferenceCategory android:title="Internet">
         <CheckBoxPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="MobileDataEnabled"
             android:title="Enable usage of mobile data"/>
 
