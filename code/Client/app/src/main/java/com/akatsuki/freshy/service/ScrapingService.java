@@ -158,6 +158,7 @@ Log.i("SERVICE", "SERVICE");
 
   private void notif(String url) {
     SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+    preference.edit().putBoolean("NotificationsEnabled", true).commit();
     Boolean strNotifPreference = preference.getBoolean("NotificationsEnabled", true);
 
     if (strNotifPreference == true) {
