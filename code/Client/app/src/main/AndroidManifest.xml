@@ -12,6 +12,8 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -32,14 +34,31 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".PreferencesActivity" android:theme="@style/AppThemePref">
+        <activity
+            android:name=".menu.PreferencesActivity"
+            android:theme="@style/AppThemePref">
         </activity>
-        <activity android:name=".AboutActivity" android:theme="@style/AppThemePref">
+        <activity
+            android:name=".menu.AboutActivity"
+            android:theme="@style/AppThemePref">
         </activity>
-        <activity android:name=".HelpActivity" android:theme="@style/AppThemePref">
+        <activity
+            android:name=".menu.HelpActivity"
+            android:theme="@style/AppThemePref">
         </activity>
-        <activity android:name=".InternetActivity" android:theme="@style/AppThemePref">
+        <activity
+            android:name=".menu.InternetActivity"
+            android:theme="@style/AppThemePref">
         </activity>
+
+        <service
+            android:name=".service.Scraper"
+            android:exported="false">
+        </service>
+        <service
+            android:name=".service.ScrapingService"
+            android:exported="false">
+        </service>
     </application>
 
 </manifest>

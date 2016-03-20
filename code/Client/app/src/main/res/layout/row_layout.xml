@@ -110,7 +110,7 @@
                 android:layout_below="@+id/editTextName"
                 android:layout_marginLeft="4dp"
                 android:layout_toRightOf="@+id/child_name_label"
-                android:hint="Enter URL"
+                android:hint="Enter URL (with http://)"
                 android:padding="10dp"
                 android:textSize="18sp"/>
 

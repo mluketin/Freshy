@@ -1,6 +1,8 @@
 package com.akatsuki.freshy;
 
+import android.app.Notification;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,14 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.akatsuki.freshy.model.ActionBig;
+import com.akatsuki.freshy.util.DataProvider;
+import com.akatsuki.freshy.util.HashGenerator;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+import java.io.IOException;
 import java.util.List;
 
 public class MyListAdapter extends ArrayAdapter<ActionBig> {
@@ -79,15 +89,8 @@ public class MyListAdapter extends ArrayAdapter<ActionBig> {
     }
 
     EditText editText = (EditText) rowView.findViewById(R.id.editTextWords);
-    List<String> words = values.get(position).getWords();//words null
-    if (words.size() > 0) {
-
-      String txtOut = "";
-      for (String token : words) {
-        txtOut += token + " ";
-      }
-      editText.setText(txtOut);
-    }
+    String words = values.get(position).getWords();//words null
+    editText.setText(words);
 
     RelativeLayout relServ = (RelativeLayout) rowView.findViewById(R.id.rel_btn);
     Button btnServ = (Button) rowView.findViewById(R.id.btn_service);
@@ -101,6 +104,7 @@ public class MyListAdapter extends ArrayAdapter<ActionBig> {
       btnServ.setTextColor(context.getResources().getColor(R.color.white));
       btnServ.setBackgroundColor(context.getResources().getColor(R.color.silver));
       relServ.setBackgroundColor(context.getResources().getColor(R.color.silver));
+
     }
 
     RelativeLayout body = (RelativeLayout) rowView.findViewById(R.id.body);
@@ -120,17 +124,72 @@ public class MyListAdapter extends ArrayAdapter<ActionBig> {
           btnService.setBackgroundColor(context.getResources().getColor(R.color.silver));
           values.get(position).setStatus(false);
           relService.setBackgroundColor(context.getResources().getColor(R.color.silver));
+//          DataProvider.pause(values.get(position), context);
+
         } else {
           btnService.setText("ON");
           btnService.setTextColor(context.getResources().getColor(R.color.gray));
           btnService.setBackgroundColor(context.getResources().getColor(R.color.white));
           relService.setBackgroundColor(context.getResources().getColor(R.color.white));
           values.get(position).setStatus(true);
-
+//          ShaAsyncTask task = new ShaAsyncTask(values.get(position), context);
+//          task.execute();
         }
       }
     });
-
     return rowView;
   }
+
+
+  private class ShaAsyncTask extends AsyncTask<Void, Void, Void> {
+
+    private ActionBig action;
+    private Context context;
+
+    public ShaAsyncTask(ActionBig action, Context ctx) {
+      this.action = action;
+      this.context = ctx;
+    }
+
+    @Override
+    protected Void doInBackground(Void... params) {
+      try {
+        Document doc = Jsoup.connect(action.getUrl()).get();
+
+        doc.select("head").remove();
+        doc.select("script").remove();
+        doc.select("iframe").remove();
+        if (!action.isLink()) {
+          doc.select("a").remove();
+        }
+
+        String plainText = "";
+
+        if (action.isImage()) {
+          plainText += doc.select("img").toString();
+        }
+        if (action.isAudio()) {
+          plainText += doc.select("audio").toString();
+        }
+        if (action.isVideo()) {
+          plainText += doc.select("video").toString();
+        }
+        if (action.isLink()) {
+          plainText += doc.select("a").toString();
+        }
+        if (action.isText()) {
+          plainText += doc.text();
+        }
+
+        String sha =  HashGenerator.GenerateStringSHA1(plainText);
+        DataProvider.resume(action, context, sha);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+
+      return null;
+    }
+  }
+
+
 }

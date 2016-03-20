@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,16 +28,35 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.akatsuki.freshy.database.SQLiteAdapter;
+import com.akatsuki.freshy.menu.AboutActivity;
+import com.akatsuki.freshy.menu.HelpActivity;
+import com.akatsuki.freshy.menu.InternetActivity;
+import com.akatsuki.freshy.menu.PreferencesActivity;
+import com.akatsuki.freshy.model.ActionBig;
+import com.akatsuki.freshy.service.ScrapingService;
+import com.akatsuki.freshy.util.DataProvider;
+import com.akatsuki.freshy.util.FileHandler;
+import com.akatsuki.freshy.util.NetworkUtil;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
 public class MainActivity extends AppCompatActivity {
 
+
+
+  private static File dirRoot;
+  public static File listFile;
+
+  private static String LIST_FILE = "list";
+
   private RelativeLayout lastOpenedChild;
 
   private MyListAdapter adapter;
-  private List<ActionBig> listData;
+  public static List<ActionBig> listData;
   private ListView listView;
 
   //ovo dolje je index otvorenog djeteta
@@ -51,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
+
     Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
     setSupportActionBar(myToolbar);
 
@@ -58,11 +79,28 @@ public class MainActivity extends AppCompatActivity {
     ab.setHomeAsUpIndicator(R.mipmap.ikona);
     ab.setDisplayHomeAsUpEnabled(true);
 
-    listData = DataProvider.getData();
+    initializeAppFolders(this);
+
+
+//    SQLiteAdapter sqLiteAdapter = new SQLiteAdapter(this);
+//    sqLiteAdapter.open();
+//    sqLiteAdapter.dropTable();
+//    sqLiteAdapter.close();
+
+//    listData = DataProvider.getData(this);
+    listData = (List<ActionBig>) FileHandler.readObject(listFile);
     listView = (ListView) findViewById(R.id.list);
     adapter = new MyListAdapter(this, listData);
     listView.setAdapter(adapter);
     listView.setItemsCanFocus(true);
+
+
+
+
+    ScrapingService service = new ScrapingService();
+    startService(new Intent(getBaseContext(), ScrapingService.class));
+
+
 
     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -100,19 +138,17 @@ public class MainActivity extends AppCompatActivity {
           action.setText(cbText.isChecked());
 
           editText = (EditText) viewSame.findViewById(R.id.editTextWords);
-          List<String> words = new ArrayList<String>();
-          StringTokenizer tokens = new StringTokenizer(editText.getText().toString(), " ");
-          String[] splited = new String[tokens.countTokens()];
-          int index = 0;
-          while (tokens.hasMoreTokens())
-            words.add(tokens.nextToken());
-          action.setWords(words);
+          action.setWords(editText.getText().toString());
 
           Button btnService = (Button) viewSame.findViewById(R.id.btn_service);
           if (btnService.getText().toString().equals("ON"))
             action.setStatus(true);
           else
             action.setStatus(false);
+
+//          DataProvider.update(action, getBaseContext());
+          FileHandler.saveObject(listData, listFile);
+
 
           Log.i("NOTIFY", "NOTIFY");
           adapter.notifyDataSetChanged();
@@ -135,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
         final RelativeLayout mainContainer = (RelativeLayout) view.findViewById(R.id.mainContainer);
         mainContainer.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
 
-        Log.i("DOnji list size", String.valueOf(listView.getChildCount()));
+        Log.i("Donji list size", String.valueOf(listView.getChildCount()));
 
         final AdapterView<?> parent1 = parent;
 
@@ -165,20 +201,18 @@ public class MainActivity extends AppCompatActivity {
             action.setText(cbText.isChecked());
 
             editText = (EditText) view.findViewById(R.id.editTextWords);
-            List<String> words = new ArrayList<String>();
-            StringTokenizer tokens = new StringTokenizer(editText.getText().toString(), " ");
-            String[] splited = new String[tokens.countTokens()];
-            int index = 0;
-            while (tokens.hasMoreTokens())
-              words.add(tokens.nextToken());
-            action.setWords(words);
+            action.setWords(editText.getText().toString());
 
             Button btnService = (Button) view.findViewById(R.id.btn_service);
             if (btnService.getText().toString().equals("ON"))
               action.setStatus(true);
             else
               action.setStatus(false);
+            FileHandler.saveObject(listData, listFile);
 
+
+//            boolean flag = DataProvider.update(action, getBaseContext());
+//            Log.i("UPDATE SUCC", String.valueOf(flag));
 
             openedChildIndex = -1;
             Log.i("NOTIFY", "NOTIFY");
@@ -193,7 +227,6 @@ public class MainActivity extends AppCompatActivity {
         openedEditText.addTextChangedListener(new TextWatcher() {
           @Override
           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
           }
 
           @Override
@@ -203,7 +236,6 @@ public class MainActivity extends AppCompatActivity {
 
           @Override
           public void afterTextChanged(Editable s) {
-
           }
         });
       }
@@ -224,9 +256,17 @@ public class MainActivity extends AppCompatActivity {
                       @Override
                       public void onDismiss(ListView listView, int[] reverseSortedPositions) {
                         for (int position : reverseSortedPositions) {
+
+                          Log.i("POSITION: ", String.valueOf(position));
+                          Log.i("SIZE: ", String.valueOf(listData.size()));
+//                          DataProvider.delete(listData.get(position), getBaseContext());
+
                           adapter.remove(adapter.getItem(position));
+                          Log.i("SIZE: ", String.valueOf(listData.size()));
                         }
                         adapter.notifyDataSetChanged();
+                        Log.i("SIZE: ", String.valueOf(listData.size()));
+                        FileHandler.saveObject(listData, listFile);
                       }
                     });
 
@@ -269,14 +309,78 @@ public class MainActivity extends AppCompatActivity {
   }
 
   public void addNew(View view) {
-    listData.add(new ActionBig(null, "", new ArrayList<String>(), "My URL", false, false, false, false, false, false));
+    listData.add(new ActionBig("", "", "My URL", false, false, false, false, false, false));
 
     adapter.notifyDataSetChanged();
     listView.smoothScrollToPosition(listView.getAdapter().getCount());
 
-    (new MyTask(this)).execute();
+//    (new MyTask(this)).execute();
 
 
+
+
+
+//    int status = NetworkUtil.getConnectivityStatus(this);
+//    if(status == NetworkUtil.TYPE_MOBILE)
+//      Log.i("NETWORK", "MOBILE");
+//    else if(status == NetworkUtil.TYPE_WIFI)
+//      Log.i("NETWORK", "WIFI");
+//    else if (status == NetworkUtil.TYPE_NOT_CONNECTED)
+//      Log.i("NETWORK", "NOT CONNECTED");
+  }
+
+  private void deleteAllInAppFolder(Context context) {
+    File appDir = context.getDir("Freshy", MODE_PRIVATE); // kreira folder aplikacije
+    deleteRecursive(appDir); //brise sve u njemu ukljucujuci i folder
+  }
+
+  private static void deleteRecursive(File fileOrDirectory) {
+    if (fileOrDirectory.isDirectory())
+      for (File child : fileOrDirectory.listFiles())
+        deleteRecursive(child);
+
+    fileOrDirectory.delete();
+  }
+
+  private static void initializeAppFolders(Context context) {
+    dirRoot = context.getDir("Freshy", MODE_PRIVATE); // kreira folder aplikacije
+
+    listFile = new File(dirRoot, LIST_FILE);
+    if (!listFile.exists()) {
+      List<ActionBig> lista = new ArrayList<>();
+      FileHandler.saveObject(lista, listFile);
+    }
+  }
+
+  @Override
+  protected void onPause() {
+    Log.i("PAUSE", "PAUSE");
+    super.onPause();
+  }
+
+  @Override
+  protected void onStop() {
+    Log.i("STOP", "STOP");
+    FileHandler.saveObject(listData, listFile);
+    super.onStop();
+  }
+
+  @Override
+  protected void onResume() {
+    listData = (List<ActionBig>) FileHandler.readObject(listFile);
+    adapter.notifyDataSetChanged();
+    super.onResume();
+  }
+
+  @Override
+  public boolean onKeyDown(int keyCode, KeyEvent event) {
+    if (keyCode == KeyEvent.KEYCODE_HOME) {
+
+    } else if (keyCode == KeyEvent.KEYCODE_BACK) {
+      Log.i("LDA", "STISNT BACK");
+      return super.onKeyDown(KeyEvent.KEYCODE_BACK, event);
+    }
+    return false;
   }
 
   private class MyTask extends AsyncTask<Void, Void, Void> {
@@ -314,7 +418,6 @@ public class MainActivity extends AppCompatActivity {
 
         NotificationManager notifManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE); //ovo je ok
         int NOTIFICATION_REF = 1;
-
 
         notifManager.notify(NOTIFICATION_REF, builder.build());
       }
